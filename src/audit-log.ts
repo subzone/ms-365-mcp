@@ -28,8 +28,7 @@ import os from 'os';
  * collected through a separate sink (sidecar, OpenTelemetry, etc.).
  */
 
-const logsDir =
-  process.env.MS365_MCP_LOG_DIR || path.join(os.homedir(), '.ms-365-mcp', 'logs');
+const logsDir = process.env.MS365_MCP_LOG_DIR || path.join(os.homedir(), '.ms-365-mcp', 'logs');
 
 const FILE_MODE = 0o600;
 const auditLogPath = path.join(logsDir, 'audit.log');

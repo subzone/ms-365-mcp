@@ -5,8 +5,7 @@ import fs from 'fs';
 import os from 'os';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const logsDir =
-  process.env.MS365_MCP_LOG_DIR || path.join(os.homedir(), '.ms-365-mcp', 'logs');
+const logsDir = process.env.MS365_MCP_LOG_DIR || path.join(os.homedir(), '.ms-365-mcp', 'logs');
 
 if (!fs.existsSync(logsDir)) {
   fs.mkdirSync(logsDir, { recursive: true, mode: 0o700 });
