@@ -20,6 +20,7 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm i -D patch-package
       - run: npm ci
       - run: npm run generate
@@ -30,3 +31,5 @@ jobs:
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+          NPM_CONFIG_ACCESS: public

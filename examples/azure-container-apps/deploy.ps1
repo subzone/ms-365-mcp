@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-Deploys ms-365-mcp-server to Azure Container Apps using the colocated Bicep template.
+Deploys ms-365-mcp to Azure Container Apps using the colocated Bicep template.
 
 .DESCRIPTION
 Creates (or updates) the target Resource Group and runs the Bicep deployment.
@@ -33,7 +33,7 @@ param(
   [Parameter(Mandatory)][string]$McpClientId,
 
   [string]$Location = 'eastus',
-  [string]$ContainerImage = 'ghcr.io/softeria/ms-365-mcp-server:latest',
+  [string]$ContainerImage = 'ghcr.io/subzone/ms-365-mcp:latest',
   [ValidateSet('global', 'gcc-high', 'dod', 'china')]
   [string]$CloudType = 'global',
   [string]$CorsOrigin = 'http://localhost:3000',
@@ -96,7 +96,7 @@ if ($secretSecure.Length -gt 0) {
 $rg = az group show -n $ResourceGroup --only-show-errors 2>$null | ConvertFrom-Json
 if (-not $rg) {
   Write-Host "Creating Resource Group '$ResourceGroup' in '$Location'..." -ForegroundColor Cyan
-  az group create -n $ResourceGroup -l $Location --tags project=ms-365-mcp-server managedBy=bicep -o none
+  az group create -n $ResourceGroup -l $Location --tags project=ms-365-mcp managedBy=bicep -o none
 } else {
   Write-Host "Resource Group '$ResourceGroup' exists ($($rg.location))" -ForegroundColor Green
 }

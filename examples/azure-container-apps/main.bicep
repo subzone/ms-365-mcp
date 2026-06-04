@@ -1,4 +1,4 @@
-// ms-365-mcp-server — Azure Container Apps deployment (community example)
+// ms-365-mcp — Azure Container Apps deployment (community example)
 //
 // Deploys a turnkey stack:
 //   - Log Analytics workspace
@@ -19,7 +19,7 @@ param baseName string
 param location string = resourceGroup().location
 
 @description('Container image reference (public image by default).')
-param containerImage string = 'ghcr.io/softeria/ms-365-mcp-server:latest'
+param containerImage string = 'ghcr.io/subzone/ms-365-mcp:latest'
 
 @description('Entra ID tenant ID (GUID).')
 param tenantId string
@@ -63,7 +63,7 @@ param maxReplicas int = 3
 
 @description('Tags applied to all resources.')
 param tags object = {
-  project: 'ms-365-mcp-server'
+  project: 'ms-365-mcp'
   managedBy: 'bicep'
 }
 

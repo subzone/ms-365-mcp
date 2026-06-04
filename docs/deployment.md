@@ -10,7 +10,7 @@ MCP Clients (Claude Desktop, Claude Code, Open WebUI, ...)
          │  Streamable HTTP + OAuth 2.1
          ▼
    ┌─────────────────────────────┐
-   │  ms-365-mcp-server --http   │  Azure Container Apps / App Service / Docker
+   │  ms-365-mcp --http   │  Azure Container Apps / App Service / Docker
    │  (stateless, no token store)│
    └─────────────┬───────────────┘
                  │  Bearer token (per-user)
@@ -32,7 +32,7 @@ A `Dockerfile` is included for containerized deployments:
 
 ```bash
 # Build the image
-docker build -t ms-365-mcp-server .
+docker build -t ms-365-mcp .
 
 # Run with environment variables
 docker run -p 3000:3000 \
@@ -40,7 +40,7 @@ docker run -p 3000:3000 \
   -e MS365_MCP_TENANT_ID=your-tenant-id \
   -e MS365_MCP_CLIENT_SECRET=your-secret \
   -e MS365_MCP_ORG_MODE=true \
-  ms-365-mcp-server \
+  ms-365-mcp \
   --http 3000 --org-mode
 ```
 
@@ -51,7 +51,7 @@ docker run -p 3000:3000 \
   -e MS365_MCP_KEYVAULT_URL=https://your-keyvault.vault.azure.net \
   -e MS365_MCP_ORG_MODE=true \
   -e MS365_MCP_PUBLIC_URL=https://mcp.example.com \
-  ms-365-mcp-server \
+  ms-365-mcp \
   --http 3000 --org-mode
 ```
 
@@ -126,7 +126,7 @@ When deploying for an organization, create a dedicated app registration instead 
    - Redirect URI: your server's callback URL
 
 2. **Add API permissions** > Microsoft Graph > Delegated permissions
-   Run `npx @softeria/ms-365-mcp-server --org-mode --list-permissions` to print the exact list of permissions required for your enabled tools.
+   Run `npx @subzone81/ms-365-mcp --org-mode --list-permissions` to print the exact list of permissions required for your enabled tools.
 
 3. **Grant admin consent** to skip per-user consent prompts:
 
@@ -208,7 +208,7 @@ The client automatically discovers OAuth endpoints and opens a browser for authe
 - **Read-only mode**: use `--read-only` to disable all write operations (send, delete, update, create)
 - **Tool filtering**: use `--enabled-tools <regex>` or `--preset <names>` to restrict available tools
 - **CORS**: configure `MS365_MCP_CORS_ORIGIN` to restrict allowed origins (defaults to `http://localhost:3000`); set explicitly when clients run on a different origin
-- **Structured audit log**: enabled by default. Every tool invocation emits one JSON line on stdout (captured by the container platform's log collector) and to `~/.ms-365-mcp-server/logs/audit.log` (mode `0o600`) with `{ event, request_id, user_principal_name, tool, http_method, status, duration_ms, error_type?, error_code? }`. The schema is intentionally narrow — tool parameters and Graph response bodies are NEVER recorded, and error messages are reduced to `error_type` / `error_code` so upstream library errors do not leak token fragments or query-string PII. Forms the "who accessed what, when" trail required for GDPR / HIPAA / PIPEDA / SOC 2 audit. Opt-out: `MS365_MCP_AUDIT_LOG=false`
+- **Structured audit log**: enabled by default. Every tool invocation emits one JSON line on stdout (captured by the container platform's log collector) and to `~/.ms-365-mcp/logs/audit.log` (mode `0o600`) with `{ event, request_id, user_principal_name, tool, http_method, status, duration_ms, error_type?, error_code? }`. The schema is intentionally narrow — tool parameters and Graph response bodies are NEVER recorded, and error messages are reduced to `error_type` / `error_code` so upstream library errors do not leak token fragments or query-string PII. Forms the "who accessed what, when" trail required for GDPR / HIPAA / PIPEDA / SOC 2 audit. Opt-out: `MS365_MCP_AUDIT_LOG=false`
 - **Graph resilience**: every call to Microsoft Graph is wrapped with a fetch timeout (default 100 s via `MS365_MCP_GRAPH_TIMEOUT_MS`), retry-with-backoff on 429 / 503 / 504 / network errors (default 3 retries, full-jitter exponential backoff, honours `Retry-After`; 503 / 504 / network errors only retried for idempotent methods, 429 retried on all methods), and a process-wide circuit breaker that opens after 5 consecutive failures and cools down for 30 s (`MS365_MCP_GRAPH_CIRCUIT_THRESHOLD` / `MS365_MCP_GRAPH_CIRCUIT_COOLDOWN_MS`). Disable the breaker for trusted automation: `MS365_MCP_GRAPH_CIRCUIT_DISABLED=true`
 
 ## Exposed Endpoints

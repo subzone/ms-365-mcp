@@ -1,11 +1,11 @@
 {
-  "name": "@softeria/ms-365-mcp-server",
-  "version": "0.0.0-development",
+  "name": "@subzone81/ms-365-mcp",
+  "version": "0.0.1",
   "description": " A Model Context Protocol (MCP) server for interacting with Microsoft 365 and Office services through the Graph API",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "ms-365-mcp-server": "dist/index.js"
+    "ms-365-mcp": "dist/index.js"
   },
   "scripts": {
     "generate": "node bin/generate-graph-client.mjs",
@@ -75,6 +75,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Softeria/ms-365-mcp-server.git"
+    "url": "git+https://github.com/subzone/ms-365-mcp.git"
   }
 }

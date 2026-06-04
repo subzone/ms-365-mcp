@@ -29,7 +29,7 @@ import os from 'os';
  */
 
 const logsDir =
-  process.env.MS365_MCP_LOG_DIR || path.join(os.homedir(), '.ms-365-mcp-server', 'logs');
+  process.env.MS365_MCP_LOG_DIR || path.join(os.homedir(), '.ms-365-mcp', 'logs');
 
 const FILE_MODE = 0o600;
 const auditLogPath = path.join(logsDir, 'audit.log');
@@ -53,7 +53,7 @@ const auditLogger = winston.createLogger({
     winston.format.json()
   ),
   defaultMeta: {
-    service: 'ms-365-mcp-server',
+    service: 'ms-365-mcp',
     stream: 'audit',
   },
   transports: [

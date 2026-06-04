@@ -25,7 +25,7 @@ type SpawnCommand = (
   options: { stdio: 'pipe'; shell: false }
 ) => ChildProcessWithoutNullStreams;
 
-const SERVICE_NAME = 'ms-365-mcp-server';
+const SERVICE_NAME = 'ms-365-mcp';
 const TOKEN_CACHE_ACCOUNT = 'msal-token-cache';
 const SELECTED_ACCOUNT_KEY = 'selected-account';
 const AUTH_CACHE_COMMAND_ENV = 'MS365_MCP_AUTH_CACHE_COMMAND';

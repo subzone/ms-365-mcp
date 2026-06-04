@@ -12,7 +12,7 @@ const version = packageJson.version;
 const program = new Command();
 
 program
-  .name('ms-365-mcp-server')
+  .name('ms-365-mcp')
   .description('Microsoft 365 MCP Server')
   .version(version)
   .option('-v', 'Enable verbose logging')
